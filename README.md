@@ -2,7 +2,7 @@
   <img src="assets/social-preview.png" alt="im-not-ai — 한글 AI 티 제거기" width="820">
 </p>
 
-# Humanize KR — 한글 AI 티 제거기 v2.3.2
+# Humanize KR — 한글 AI 티 제거기 v2.4.0
 
 > **English**: [`README.en.md`](README.en.md)
 
@@ -48,6 +48,24 @@ cd im-not-ai
 - **업데이트**: `./update.sh` — 새 버전 자동 감지 후 `git pull` + 재설치(`--check`는 감지만). 마켓플레이스 설치는 `/plugin update`.
 - Codex도 **light·standard·heavy 전체 경로**를 제공합니다. 협업 에이전트가 있으면 진단·윤문·finalize를 독립 실행하고, 없으면 같은 역할을 순차 실행합니다.
 
+## 오프라인 / 폐쇄망 — 사용자 LLM 서버 연결 (Windows 포터블)
+
+에이전트 CLI 없이, **이미 돌고 있는 OpenAI 호환 LLM 서버**(LM Studio·vLLM·llama.cpp server·Ollama 등)에 붙여 윤문하는 독립 실행 경로입니다. 폐쇄망에서 쓸 수 있게 Python 표준 라이브러리만 사용합니다.
+
+```powershell
+# 소스 체크아웃 (Python 3.10+)
+git clone https://github.com/doha-230/im-not-ai.git
+cd im-not-ai/windows
+.\humanize-korean.ps1 draft.txt -o final.md --api-base http://127.0.0.1:1234/v1 --model my-local-model
+
+# Python 없는 PC용 포터블 exe (빌드 PC에서 한 번)
+.\build-portable.ps1 -Zip
+```
+
+- **추론 서버와 GGUF/모델은 포함되지 않습니다** — 사용자가 이미 가진 서버의 `/chat/completions` 를 `--api-base`/`--model` 로 가리키는 클라이언트입니다.
+- 결과는 UTF-8 로 저장되고, 마지막에 `verify_gates.py` 구조 수렴 게이트가 **같은 프로세스에서** 돌아 종료 코드(0 수렴 / 1 경고 / 2 중단 / 3 실행 오류)로 판정합니다.
+- 자세한 내용: [`windows/README.md`](windows/README.md)
+
 ## 왜 한글 특화인가
 
 영어권 humanizer(QuillBot · Hix · Undetectable AI)는 한국어에 약합니다. 한글 AI 글의 티는 대부분 **영어 번역투**에서 나옵니다. 
@@ -66,9 +84,9 @@ cd im-not-ai
 3. **장르 유지** — 칼럼을 문학으로, 리포트를 에세이로 옮기지 않음.
 4. **과윤문 금지** — 변경률 30% 초과 시 경고, 50% 초과 시 강제 중단.
 
-## 아키텍처 (v2.3) — route_hint 3경로 + 구조 수렴 게이트
+## 아키텍처 (v2.4) — route_hint 3경로 + 구조 수렴 게이트 + 독립 실행기
 
-입력을 shim(`prepare_monolith_input.py`)이 먼저 정량 채점하고, 그 점수로 **`route_hint`(light | standard | heavy)** 를 결정적으로 산출합니다. 글의 상태가 경로를 정하고, 경로가 콜 수를 정합니다. 절감은 모델 교체가 아니라 **콜 수 축소**에서 옵니다(모델 선택은 사용자 몫).
+에이전트 경로에서는 입력을 shim(`prepare_monolith_input.py`)이 먼저 정량 채점하고, 그 점수로 **`route_hint`(light | standard | heavy)** 를 결정적으로 산출합니다. 글의 상태가 경로를 정하고, 경로가 콜 수를 정합니다. 절감은 모델 교체가 아니라 **콜 수 축소**에서 옵니다(모델 선택은 사용자 몫). Windows 포터블 실행기는 별도 단일 호출 경로로 사용자 OpenAI 호환 서버에 연결합니다.
 
 | 경로 | LLM 콜 수 | 언제 | 파이프라인 |
 |---|---|---|---|
@@ -379,6 +397,13 @@ Claude Code 세션 안에서 새 글을 붙여넣고 똑같이 부탁하면 됩�
 3. **장르 베이스라인 확장** ([#121](https://github.com/epoko77-ai/im-not-ai/pull/121)) — 근본 원인은 column/report 장르가 essay(KatFish) 셀로 폴백되던 구멍. 실측 인간 극으로 두 셀을 추가하고, 인간 실측이 AI 극을 역전한 지표(ending_comma_rate 등)는 해당 장르에서 비활성
 
 재실측이 셀 산출 코퍼스와 같은 in-sample이라는 한계는 남습니다 — out-of-sample 검증은 다음 코퍼스 라운드에서 수행합니다. 공개 코드에 대한 재현 가능한 외부 반례는 이 프로젝트가 가장 빨리 좋아지는 경로입니다. 이런 리뷰는 언제든 환영합니다.
+
+## v2.4.0 — Windows 포터블 실행기 (2026-10)
+
+- 사용자가 이미 운영하는 OpenAI 호환 서버에 연결하는 독립 CLI를 추가했습니다. 서버 실행 파일과 GGUF 모델은 포함하지 않습니다.
+- Python 소스용 PowerShell·배치 실행기와 Python 설치가 필요 없는 Windows 포터블 빌드 스크립트를 추가했습니다. 출력 파일과 입력 파일이 같으면 원문을 보존하고 오류로 종료합니다.
+- 윤문 후 기존 결정적 검증 게이트를 같은 프로세스에서 실행합니다. PowerShell 5.1 인코딩과 PyInstaller의 동적 import 누락을 보완했습니다.
+- 더미 API를 사용하는 통합 테스트와 Windows CI 빌드·실행 테스트를 추가했습니다. 사용법은 [`windows/README.md`](windows/README.md)에 있습니다.
 
 ## v2.3.2 — 플러그인 스킬 위치 정정 (2026-08)
 

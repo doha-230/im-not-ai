@@ -72,12 +72,22 @@ class ConsoleEncodingTests(unittest.TestCase):
 
         self.assertEqual(console.run_gate(boom), 3)
 
+    def test_local_runner_help_survives_cp949(self) -> None:
+        """러너도 cp949 콘솔에서 죽지 않아야 한다 — 포터블 exe 의 주 사용처다."""
+        proc = subprocess.run(
+            [sys.executable, str(_SCRIPTS / "local_runner.py"), "--help"],
+            capture_output=True, text=True, env=_cp949_env(), timeout=60,
+        )
+        self.assertEqual(proc.returncode, 0)
+        self.assertNotIn("UnicodeEncodeError", proc.stderr)
+        self.assertIn("--api-base", proc.stdout)
+
     def test_all_korean_printing_scripts_are_hardened(self) -> None:
         """한글을 찍는 런타임 스크립트는 전부 콘솔 하드닝을 걸어야 한다."""
         targets = [
             "verify_gates.py", "verify_change_rate.py", "prepare_monolith_input.py",
             "reassemble_chunks.py", "checks.py", "build_quick_rules.py",
-            "build_diagnosis_rules.py", "sanitize_text.py",
+            "build_diagnosis_rules.py", "sanitize_text.py", "local_runner.py",
         ]
         missing = []
         for name in targets:

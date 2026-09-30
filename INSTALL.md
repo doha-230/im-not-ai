@@ -149,6 +149,21 @@ cd im-not-ai
 
 ---
 
+## 오프라인 / Windows 포터블 — 사용자 OpenAI 호환 서버
+
+에이전트 CLI 없이 돌리는 독립 실행 경로입니다. **추론 서버와 GGUF/모델 파일은 이 리포에 포함되지 않습니다** — 사용자가 이미 띄워 둔 OpenAI 호환 `/chat/completions` 서버에 `--api-base`/`--model` 로 붙는 클라이언트입니다.
+
+```bash
+git clone https://github.com/doha-230/im-not-ai.git
+cd im-not-ai/windows
+.\humanize-korean.ps1 draft.txt -o final.md --api-base http://127.0.0.1:1234/v1 --model my-local-model   # Python 3.10+
+.\build-portable.ps1 -Zip                                                                             # Python 없는 PC용 exe
+```
+
+Python 표준 라이브러리만 쓰며, 저장 직후 `scripts/verify_gates.py` 구조 수렴 게이트가 같은 프로세스에서 실행됩니다. 전체 안내는 [`windows/README.md`](windows/README.md)를 참고하세요. 위 표의 에이전트 스킬 설치 흐름과는 완전히 독립입니다(설치 경로를 건드리지 않음).
+
+---
+
 ## 트러블슈팅
 
 - **"refuse: … 가 이미 있음"** — 해당 경로에 이미 다른 파일/링크가 있습니다. `--force`(백업 후 덮어쓰기) 또는 직접 정리 후 재실행하세요.
@@ -162,7 +177,7 @@ cd im-not-ai
 - GitHub Copilot CLI: `copilot plugin` 명령 지원 버전(1.0.79-5에서 검증).
 - Codex CLI: 0.121.0 이상(`~/.codex/skills` Skills 지원).
 - Gemini CLI: 0.14.0 이상(`gemini extensions` 명령 사용 가능).
-- macOS·Linux의 `bash`. (Windows는 WSL 권장 — 심링크 때문에.)
+- macOS·Linux의 `bash`. (Windows는 WSL 권장 — 심링크 때문에. WSL 없이 쓰려면 에이전트 스킬 대신 위 **오프라인 / Windows 포터블** 경로를 쓰세요.)
 
 ---
 

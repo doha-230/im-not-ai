@@ -1,4 +1,4 @@
-# Humanize KR — AI 한글 티 제거 하네스 (v2.3.2)
+# Humanize KR — AI 한글 티 제거 하네스 (v2.4.0)
 
 ## 프로젝트 개요
 
@@ -60,6 +60,7 @@ im-not-ai/
 │   ├── reassemble_chunks.py       # 장문 청킹 재조립 (passthrough 원문 삽입 + 문자수 대사)
 │   ├── verify_gates.py            # v2.3 구조 수렴 게이트 — 문자율·목표달성·대구·golden/수치
 │   ├── verify_change_rate.py      # 하위 호환 문자 변경률 게이트
+│   ├── local_runner.py            # 독립 러너 — 사용자 OpenAI 호환 서버 클라이언트 (stdlib only, 포터블 exe 대응)
 │   ├── build_quick_rules.py       # taxonomy quick 메타 → quick-rules.md 빌드 (ID 드리프트 차단)
 │   ├── build_social_preview_v2.py
 │   └── make_thumbnail.py
@@ -90,6 +91,10 @@ im-not-ai/
 │   ├── agents/openai.yaml         # Codex UI 메타데이터
 │   ├── references → ../../../skills/humanize-korean/references
 │   └── scripts/                   # 공용 런타임 스크립트 실행 래퍼
+├── windows/                       # 오프라인/폐쇄망 포터블 러너 (사용자 OpenAI 호환 서버 — 서버·모델 비포함)
+│   ├── humanize-korean.ps1 · humanize-korean.bat   # 소스 체크아웃용 실행기 (러너 인자를 그대로 전달)
+│   ├── build-portable.ps1         # PyInstaller 로 Python 없는 exe 생성 (헬퍼는 --exclude-module 로 비동결)
+│   └── README.md                  # 서버 요구·옵션·종료 코드·문제 해결
 └── _workspace/                    # 런타임 산출물 (run_id별, gitignored)
     └── {YYYY-MM-DD-NNN-TAG}/          # TAG=세션 구분자(동시 실행 충돌 방지)
         ├── 01_input.txt · 00_metrics.json · 01_input_with_metrics.txt  # 원문·점수·결합
