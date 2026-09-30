@@ -33,3 +33,23 @@ jobs:
       # CLAUDE_HOME/CODEX_HOME 을 mktemp 로 덮고 --no-gemini 로 실행하므로
       # 러너의 실제 홈은 건드리지 않는다.
       - run: bash tests/test_install_smoke.sh
+
+  windows-portable:
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+      - run: python -m pip install pytest pyinstaller
+      # 실제 Windows PowerShell 5.1로 exe를 빌드한다.
+      - run: powershell.exe -NoProfile -ExecutionPolicy Bypass -File windows/build-portable.ps1 -SkipInstall -Zip
+      # 더미 OpenAI 호환 서버에 exe와 PowerShell 실행기를 각각 연결한다.
+      - run: python -m pytest -q tests/test_local_runner.py
+        env:
+          HUMANIZE_KOREAN_EXE: dist/humanize-korean/humanize-korean.exe
+      - uses: actions/upload-artifact@v4
+        with:
+          name: humanize-korean-windows-onedir
+          path: dist/humanize-korean-windows-onedir.zip
+          if-no-files-found: error
