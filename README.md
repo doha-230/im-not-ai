@@ -54,7 +54,8 @@ cd im-not-ai
 
 ```powershell
 # 소스 체크아웃 (Python 3.10+)
-cd windows
+git clone https://github.com/doha-230/im-not-ai.git
+cd im-not-ai/windows
 .\humanize-korean.ps1 draft.txt -o final.md --api-base http://127.0.0.1:1234/v1 --model my-local-model
 
 # Python 없는 PC용 포터블 exe (빌드 PC에서 한 번)

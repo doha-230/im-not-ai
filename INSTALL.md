@@ -154,7 +154,7 @@ cd im-not-ai
 에이전트 CLI 없이 돌리는 독립 실행 경로입니다. **추론 서버와 GGUF/모델 파일은 이 리포에 포함되지 않습니다** — 사용자가 이미 띄워 둔 OpenAI 호환 `/chat/completions` 서버에 `--api-base`/`--model` 로 붙는 클라이언트입니다.
 
 ```bash
-git clone https://github.com/epoko77-ai/im-not-ai.git
+git clone https://github.com/doha-230/im-not-ai.git
 cd im-not-ai/windows
 .\humanize-korean.ps1 draft.txt -o final.md --api-base http://127.0.0.1:1234/v1 --model my-local-model   # Python 3.10+
 .\build-portable.ps1 -Zip                                                                             # Python 없는 PC용 exe
