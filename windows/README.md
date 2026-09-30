@@ -57,7 +57,7 @@ cd windows
 .\build-portable.ps1 -Zip
 ```
 
-산출물: `dist\humanize-korean\humanize-korean.exe` (+ `-Zip` 이면 zip).
+산출물: `dist\humanize-korean\humanize-korean.exe` (+ `README.md`·`LICENSE`, `-Zip` 이면 zip).
 이 폴더를 폐쇄망 PC로 복사한 뒤:
 
 ```powershell

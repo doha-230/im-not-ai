@@ -75,11 +75,19 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "스모크 실행 실패 (exit $LASTEXITCODE)" }
   }
 
+  $readmePath = Join-Path $root "windows/README.md"
+  $licensePath = Join-Path $root "LICENSE"
+  if ($Mode -eq "onedir") {
+    Copy-Item -LiteralPath $readmePath -Destination (Join-Path $target "README.md") -Force
+    Copy-Item -LiteralPath $licensePath -Destination (Join-Path $target "LICENSE") -Force
+  }
+
   if ($Zip) {
     Write-Host "[4/4] zip 묶기…" -ForegroundColor Cyan
     $zipPath = Join-Path $dist "${Name}-windows-${Mode}.zip"
     if (Test-Path $zipPath) { Remove-Item $zipPath -Force }
-    Compress-Archive -Path $target -DestinationPath $zipPath
+    $archiveItems = if ($Mode -eq "onefile") { @($target, $readmePath, $licensePath) } else { @($target) }
+    Compress-Archive -Path $archiveItems -DestinationPath $zipPath
     Write-Host "생성: $zipPath" -ForegroundColor Green
   }
 
