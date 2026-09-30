@@ -219,7 +219,8 @@ class FrozenBundleTests(unittest.TestCase):
                 proc = subprocess.run(
                     [sys.executable, "-c", bootstrap, str(inp), "-o", str(out),
                      "--api-base", f"{base}/v1", "--model", "m"],
-                    capture_output=True, text=True, timeout=180,
+                    capture_output=True, text=True, encoding="utf-8",
+                    errors="replace", timeout=180,
                 )
 
                 self.assertEqual(proc.returncode, 0, f"{proc.stdout}\n{proc.stderr}")
