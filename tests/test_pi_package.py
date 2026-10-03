@@ -47,6 +47,7 @@ class PiPackageTests(unittest.TestCase):
                  "--workspace", str(root / "workspace")],
                 capture_output=True,
                 text=True,
+                encoding="utf-8",
                 check=False,
             )
             self.assertEqual(started.returncode, 0, started.stdout + started.stderr)
@@ -65,6 +66,7 @@ class PiPackageTests(unittest.TestCase):
                  "--genre", "essay", "--json"],
                 capture_output=True,
                 text=True,
+                encoding="utf-8",
                 check=False,
             )
             self.assertEqual(gate.returncode, 0, gate.stdout + gate.stderr)
