@@ -1,12 +1,13 @@
 ---
 name: humanize-korean
-version: "2.4.0"
+version: "2.4.1"
 description: AI(ChatGPT·Claude·Gemini 등)가 쓴 한글 텍스트를 "사람이 쓴 글처럼" 윤문해주는 오케스트레이터 스킬. 번역투·영어 인용 과다·기계적 병렬·관용구·피동태 남용·접속사 남발·리듬 균일성·이모지/불릿 과다 등 10대 카테고리 85개 AI 티 패턴을 탐지·분류해 내용은 한 글자도 건드리지 않고 문체·리듬·표현만 자연스러운 한국어로 재작성한다. shim의 route_hint(light|standard|heavy)로 경로를 정해 잘 쓴 글은 1콜, 표준은 2콜, 중증·장문만 3+콜(진단→겨냥 윤문→finalize)로 처리한다. 트리거 — "AI 티 없애줘", "AI 같은 글 자연스럽게", "GPT/ChatGPT 문체", "AI 번역투 고쳐", "사람이 쓴 것처럼 윤문", "AI 윤문", "ChatGPT 티 제거", "한글 AI 탐지·윤문", "AI 글 사람처럼", "번역투 제거", "영어 인용 많은 글 윤문", "AI 글 티 안 나게", "휴머나이저", "humanize Korean", "AI detector bypass 한글". 후속 작업 — "특정 카테고리만 다시", "윤문 강도 조정", "장르 바꿔서", "이 문단만", "2차 윤문" 도 모두 이 스킬. 단순 맞춤법·오탈자 교정은 직접 처리, 번역은 번역 스킬, 내용 추가·삭제를 동반한 재작성은 별도 집필 스킬.
 ---
 
-# Humanize Korean — AI 한글 티 제거 오케스트레이터 (v2.4)
+# Humanize Korean — AI 한글 티 제거 오케스트레이터 (v2.4.1)
 
-> **v2.4.0** — Windows 포터블 실행 경로 추가. 사용자가 가진 OpenAI 호환 서버에 연결하며 서버·모델은 번들하지 않음. 기존 에이전트 경로는 동일.
+> **v2.4.1** — 폐쇄망 Pi 코딩 에이전트용 독립 스킬 ZIP 추가. 기존 에이전트 경로는 동일.
+> **v2.4.0** — Windows 포터블 실행 경로 추가. 사용자가 가진 OpenAI 호환 서버에 연결하며 서버·모델은 번들하지 않음.
 > **v2.3.2** — 플러그인 스킬을 관례 위치(루트 `skills/`)로 이동. 마켓플레이스 설치에서 shim·진단이 조용히 누락되던 경로 문제 해소.
 > **v2.3.1** — 경로 해석·런타임 경계·계약 정합 수정 회차(외부 제보 반영). 기능 변경 없음.
 > **v2.3.0** — 구조 수렴 게이트(`verify_gates.py` 4축: 목표달성·대구 전멸·수치·golden) + 진단 슬림 인덱스(`diagnosis-rules.md`, taxonomy 83%↓). (v2.2: route_hint 3경로 + 단일 콜 우선)
@@ -17,7 +18,7 @@ description: AI(ChatGPT·Claude·Gemini 등)가 쓴 한글 텍스트를 "사람�
 작업 시작 시 가장 먼저 다음 한 줄을 사용자에게 출력한다.
 
 ```
-humanize-korean v2.4 — 경로: {light|standard|heavy} ({route_hint|사용자 지정}) / run_id: {YYYY-MM-DD-NNN-TAG}
+humanize-korean v2.4.1 — 경로: {light|standard|heavy} ({route_hint|사용자 지정}) / run_id: {YYYY-MM-DD-NNN-TAG}
 ```
 
 (경로는 Phase 1의 shim 실행 후에 확정되므로, 이 상태 줄은 shim 직후 출력한다.)

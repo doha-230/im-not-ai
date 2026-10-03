@@ -1,0 +1,23 @@
+Humanize Korean v2.4.1 — Pi 코딩 에이전트용 오프라인 스킬
+
+요구 사항: Pi 코딩 에이전트, Python 3.12, Pi에서 사용할 수 있는 LLM.
+스킬 파일과 Python 스크립트 설치에는 인터넷 또는 pip가 필요하지 않습니다.
+Pi의 모델 자체가 폐쇄망에서 동작하도록 설정되어 있어야 윤문할 수 있습니다.
+
+Windows PowerShell 사용자 설치:
+  Expand-Archive .\pi-humanize-korean-v2.4.1.zip -DestinationPath "$HOME\.pi\agent\skills" -Force
+
+프로젝트에만 설치:
+  프로젝트 폴더의 .pi\skills 에 압축을 풉니다.
+
+ZIP 내부의 humanize-korean\SKILL.md가 해당 폴더에 위치해야 합니다.
+Pi가 이미 실행 중이면 /reload를 실행하거나 다시 시작합니다.
+사용: /skill:humanize-korean <한국어 원문 파일 경로>
+     또는 "이 한국어 글의 AI 티를 자연스럽게 고쳐줘"라고 요청합니다.
+
+Python 실행 명령이 python이 아닌 환경에서는 py -3.12를 사용합니다.
+스크립트는 표준 라이브러리만 사용하며, local_runner.py를 명시적으로
+실행할 때만 지정된 OpenAI 호환 서버로 HTTP 요청을 보냅니다.
+
+프로젝트 원본: https://github.com/doha-230/im-not-ai
+라이선스: MIT (humanize-korean/LICENSE)

@@ -4,7 +4,7 @@
 
 LLMs write Korean that *reads* like translated English. Native speakers spot it instantly, and no amount of prompting ("write naturally in Korean") fixes it — the tells are structural, not stylistic.
 
-**im-not-ai** rewrites AI-written Korean into natural Korean **without changing a single fact** — style, rhythm and phrasing only. MIT licensed, runs as a CLI skill inside Claude Code, GitHub Copilot CLI, OpenAI Codex CLI and Gemini CLI.
+**im-not-ai** rewrites AI-written Korean into natural Korean **without changing a single fact** — style, rhythm and phrasing only. MIT licensed, runs as a CLI skill inside Claude Code, GitHub Copilot CLI, OpenAI Codex CLI, Gemini CLI and Pi coding agent.
 
 ```
 "AI 기술을 통해 효율을 높일 수 있다"      →  "AI로 효율을 높일 수 있다"
@@ -76,6 +76,8 @@ input
 Measured: running a 10,000-character piece as 7 chunked calls cost 610K tokens; the same piece in a single call cost 134K at equal quality — reloading the rulebook per chunk eats the savings. Hence single-call-first.
 
 ## Install
+
+**Pi coding agent** (offline skill ZIP; Python 3.12): Download `pi-humanize-korean-v2.4.1.zip` from the [v2.4.1 release](https://github.com/doha-230/im-not-ai/releases/tag/v2.4.1), extract it into `~/.pi/agent/skills/`, reload Pi, then use `/skill:humanize-korean`. Pi needs a model accessible within your offline environment. The package uses only Python's standard library.
 
 **Claude Code** (plugin marketplace, no clone):
 
