@@ -1,6 +1,6 @@
 # 설치 가이드 (Install)
 
-Humanize KR은 **Claude Code**, **GitHub Copilot CLI**, **OpenAI Codex CLI**, **Gemini CLI(Antigravity)** 에서 전역으로 쓸 수 있습니다.
+Humanize KR은 **Claude Code**, **GitHub Copilot CLI**, **OpenAI Codex CLI**, **Gemini CLI(Antigravity)**, **Pi 코딩 에이전트**에서 쓸 수 있습니다.
 
 | 도구 | 경로 | 설치 방법 |
 |---|---|---|
@@ -8,6 +8,7 @@ Humanize KR은 **Claude Code**, **GitHub Copilot CLI**, **OpenAI Codex CLI**, **
 | GitHub Copilot CLI | 단일 호출 경로만 | 플러그인 마켓플레이스(권장) / 저장소 직접 설치(호환성 전용) |
 | Codex CLI | light·standard·heavy 전체 경로 | 클론 + `install.sh` |
 | Gemini CLI | 단일 콜 경로만 | ① `gemini extensions install`(권장) / ② 클론 + `install.sh` |
+| Pi 코딩 에이전트 | light·standard·heavy 경로 | 릴리스 ZIP을 스킬 폴더에 압축 해제 (Python 3.12) |
 
 > Codex는 협업 에이전트가 있으면 진단·윤문·finalize를 독립 컨텍스트로 실행하고, 없는 실행 환경에서는 같은 역할 계약을 주 에이전트가 순차 실행합니다. GitHub Copilot CLI와 Gemini는 단일 호출 경로입니다.
 
@@ -84,6 +85,18 @@ cd im-not-ai
 ```
 
 `~/.codex/skills/humanize-korean`에 전체 스킬을 심링크합니다. Codex에서 `$humanize-korean`으로 발동하거나, `/skills` 메뉴에서 선택하세요. `--strict` 또는 “정밀 모드”로 heavy 경로를 강제할 수 있습니다.
+
+---
+
+## Pi 코딩 에이전트 — 폐쇄망
+
+릴리스 페이지의 `pi-humanize-korean-v2.4.1.zip`을 폐쇄망 PC로 옮긴 뒤 PowerShell에서 압축을 풉니다.
+
+```powershell
+Expand-Archive .\pi-humanize-korean-v2.4.1.zip -DestinationPath "$HOME\.pi\agent\skills" -Force
+```
+
+`$HOME\.pi\agent\skills\humanize-korean\SKILL.md`가 생기면 Pi에서 `/reload`하거나 다시 시작합니다. `/skill:humanize-korean <원문 파일 경로>`로 실행할 수 있습니다. 패키지 설치와 점수·검증 스크립트에는 인터넷이나 pip가 필요하지 않습니다. Pi 자체는 폐쇄망에서 접근할 수 있는 모델로 설정되어 있어야 합니다. Python 명령을 찾지 못하면 `py -3.12`를 사용합니다.
 
 ---
 

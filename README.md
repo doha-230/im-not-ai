@@ -2,7 +2,7 @@
   <img src="assets/social-preview.png" alt="im-not-ai — 한글 AI 티 제거기" width="820">
 </p>
 
-# Humanize KR — 한글 AI 티 제거기 v2.4.0
+# Humanize KR — 한글 AI 티 제거기 v2.4.1
 
 > **English**: [`README.en.md`](README.en.md)
 
@@ -12,7 +12,7 @@ AI(ChatGPT · Claude · Gemini 등)가 쓴 한글 글을 **내용은 한 글자�
 
 ## 설치 (Install)
 
-> **Claude Code**, **GitHub Copilot CLI**, **OpenAI Codex CLI**, **Gemini CLI**를 지원합니다. 전체 가이드: [`INSTALL.md`](INSTALL.md)
+> **Claude Code**, **GitHub Copilot CLI**, **OpenAI Codex CLI**, **Gemini CLI**, **Pi 코딩 에이전트**를 지원합니다. 전체 가이드: [`INSTALL.md`](INSTALL.md)
 
 **GitHub Copilot CLI — 플러그인 마켓플레이스 (클론 불필요, 권장)**
 
@@ -47,6 +47,16 @@ cd im-not-ai
 - 한쪽만: `./install.sh --claude-only` / `--codex-only` · 제거: `./uninstall.sh`
 - **업데이트**: `./update.sh` — 새 버전 자동 감지 후 `git pull` + 재설치(`--check`는 감지만). 마켓플레이스 설치는 `/plugin update`.
 - Codex도 **light·standard·heavy 전체 경로**를 제공합니다. 협업 에이전트가 있으면 진단·윤문·finalize를 독립 실행하고, 없으면 같은 역할을 순차 실행합니다.
+
+**Pi 코딩 에이전트 — 폐쇄망용 ZIP (Python 3.12)**
+
+GitHub Release의 `pi-humanize-korean-v2.4.1.zip`을 폐쇄망 PC로 옮겨 Pi 스킬 폴더에 압축을 풉니다. 인터넷과 pip 설치 없이 작동하며, 윤문에는 폐쇄망에서 사용할 수 있게 설정된 Pi 모델이 필요합니다.
+
+```powershell
+Expand-Archive .\pi-humanize-korean-v2.4.1.zip -DestinationPath "$HOME\.pi\agent\skills" -Force
+```
+
+Pi에서 `/reload` 후 `/skill:humanize-korean <원문 파일 경로>`로 실행합니다. Python 명령이 `python`이 아니면 `py -3.12`를 사용하세요. 패키징 원본과 상세 사용법은 [`packaging/pi/INSTALL.txt`](packaging/pi/INSTALL.txt)에 있습니다.
 
 ## 오프라인 / 폐쇄망 — 사용자 LLM 서버 연결 (Windows 포터블)
 
@@ -84,7 +94,7 @@ cd im-not-ai/windows
 3. **장르 유지** — 칼럼을 문학으로, 리포트를 에세이로 옮기지 않음.
 4. **과윤문 금지** — 변경률 30% 초과 시 경고, 50% 초과 시 강제 중단.
 
-## 아키텍처 (v2.4) — route_hint 3경로 + 구조 수렴 게이트 + 독립 실행기
+## 아키텍처 (v2.4.1) — route_hint 3경로 + 구조 수렴 게이트 + 독립 실행기
 
 에이전트 경로에서는 입력을 shim(`prepare_monolith_input.py`)이 먼저 정량 채점하고, 그 점수로 **`route_hint`(light | standard | heavy)** 를 결정적으로 산출합니다. 글의 상태가 경로를 정하고, 경로가 콜 수를 정합니다. 절감은 모델 교체가 아니라 **콜 수 축소**에서 옵니다(모델 선택은 사용자 몫). Windows 포터블 실행기는 별도 단일 호출 경로로 사용자 OpenAI 호환 서버에 연결합니다.
 
@@ -397,6 +407,12 @@ Claude Code 세션 안에서 새 글을 붙여넣고 똑같이 부탁하면 됩�
 3. **장르 베이스라인 확장** ([#121](https://github.com/epoko77-ai/im-not-ai/pull/121)) — 근본 원인은 column/report 장르가 essay(KatFish) 셀로 폴백되던 구멍. 실측 인간 극으로 두 셀을 추가하고, 인간 실측이 AI 극을 역전한 지표(ending_comma_rate 등)는 해당 장르에서 비활성
 
 재실측이 셀 산출 코퍼스와 같은 in-sample이라는 한계는 남습니다 — out-of-sample 검증은 다음 코퍼스 라운드에서 수행합니다. 공개 코드에 대한 재현 가능한 외부 반례는 이 프로젝트가 가장 빨리 좋아지는 경로입니다. 이런 리뷰는 언제든 환영합니다.
+
+## v2.4.1 — Pi 코딩 에이전트용 오프라인 스킬 (2026-10)
+
+- Pi의 `SKILL.md` 형식으로 윤문 규칙, 점수 산출기, 구조 검증 게이트를 한 폴더에 묶어 ZIP으로 배포합니다. Python 3.12 표준 라이브러리만 사용합니다.
+- Pi에 설정된 모델로 light·standard·heavy 경로를 실행합니다. 사용자가 운영하는 OpenAI 호환 로컬 서버용 단일 호출 실행기도 함께 포함합니다. 모델과 추론 서버는 포함하지 않습니다.
+- ZIP 압축 해제, 점수 산출, 검증 게이트, 더미 로컬 서버 HTTP 호출을 확인했습니다. Python 3.12 전체 테스트는 399 passed, 6 skipped, 190 subtests passed였습니다. Pi 자체 실행은 이 빌드 환경에서 확인하지 못했습니다.
 
 ## v2.4.0 — Windows 포터블 실행기 (2026-10)
 

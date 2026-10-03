@@ -34,7 +34,7 @@ python3 "${SKILL_ROOT}/scripts/prepare_monolith_input.py" --run-dir "$RUN_DIR" -
 ```
 
 6. `00_metrics.json`의 `route_hint`를 읽는다. `--strict`, `정밀 모드`, `정밀하게`, `제대로`는 heavy로, `가볍게`, `빠르게만`은 light로 덮어쓴다. 힌트가 없으면 standard다.
-7. 사용자에게 `humanize-korean v2.4-codex — 경로: ROUTE (SOURCE) / run_id: RUN_ID` 한 줄을 알리고 계속 작업한다.
+7. 사용자에게 `humanize-korean v2.4.1-codex — 경로: ROUTE (SOURCE) / run_id: RUN_ID` 한 줄을 알리고 계속 작업한다.
 
 ## 역할 실행 계약
 
